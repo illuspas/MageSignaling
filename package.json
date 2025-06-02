@@ -1,18 +1,27 @@
 {
   "name": "magesignaling",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Signaling",
-    "STUN"
+    "STUN",
+    "WebSocket",
+    "WebRTC"
   ],
   "author": "Chen Mingliang",
   "license": "Apache-2.0",
   "description": "A signaling server implemented in Node.js",
   "dependencies": {
+    "stun": "^2.1.0",
     "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-jsdoc": "^50.7.1",
+    "globals": "^16.2.0"
   }
 }
