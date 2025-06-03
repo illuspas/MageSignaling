@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const MageSignaling = require("..");
 const path = require("path");
 const currentFilePath = path.resolve(__dirname);
