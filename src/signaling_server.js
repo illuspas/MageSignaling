@@ -12,19 +12,12 @@ class SignalingServer {
   }
 
   run() {
-    // const server = https.createServer({
-    //   cert: fs.readFileSync(this.argv.cert_file),
-    //   key: fs.readFileSync(this.argv.key_file)
-    // }, (req, res, next) => {
-    //   res.writeHead(200, { "Content-Type": "text/plain" });
-    //   res.end("");
-    // });
-
-    const wss = new ws.WebSocketServer({ port: this.argv.signaling_port });
-
-    wss.on("listening", () => {
-      console.log("[signaling] server started on port", this.argv.signaling_port);
+    const server = https.createServer({
+      cert: fs.readFileSync(this.argv.cert_file),
+      key: fs.readFileSync(this.argv.key_file)
     });
+
+    const wss = new ws.WebSocketServer({ server });
 
     wss.on("connection", (ws, req) => {
       const query = url.parse(req.url, true).query;
@@ -74,9 +67,9 @@ class SignalingServer {
       console.error("WebSocket server error:", err);
     });
 
-    // server.listen(this.argv.signaling_port, () => {
-    //   console.log("[signaling] server started on port", this.argv.signaling_port);
-    // });
+    server.listen(this.argv.signaling_port, () => {
+      console.log("[signaling] server started on port", this.argv.signaling_port);
+    });
   }
 
   addUserToRoom(ws, roomId, userId) {
@@ -244,7 +237,7 @@ class SignalingServer {
     try {
       ws.send(JSON.stringify({
         type: "error",
-        message: errorMsg,
+        payload: errorMsg,
         timestamp: Date.now()
       }));
     } catch (error) {
