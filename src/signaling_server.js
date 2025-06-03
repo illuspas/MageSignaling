@@ -146,17 +146,15 @@ class SignalingServer {
       return;
     }
 
-    // 处理1对1消息
     if (message.to) {
+    // 处理1对1消息
       this.sendToUser(roomId, userId, message.to, {
         ...message,
         from: userId,
-        to: message.to,
         timestamp: Date.now()
       });
-    }
-    // 处理广播消息
-    else {
+    } else {
+      // 处理广播消息
       this.broadcastToRoom(roomId, {
         ...message,
         from: userId,
