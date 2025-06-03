@@ -67,8 +67,8 @@ class SignalingServer {
       console.error("WebSocket server error:", err);
     });
 
-    server.listen(this.argv.signaling_port, () => {
-      console.log("[signaling] server started on port", this.argv.signaling_port);
+    server.listen(this.argv.port, () => {
+      console.log("[signaling] server started on TCP port", this.argv.port);
     });
   }
 

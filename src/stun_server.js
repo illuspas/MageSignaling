@@ -20,8 +20,8 @@ class STUNServer {
       server.send(message, rinfo.port, rinfo.address);
     });
 
-    server.listen(this.argv.stun_port, () => {
-      console.log("[stun] server started on port", this.argv.stun_port);
+    server.listen(this.argv.port, () => {
+      console.log("[stun] server started on UDP port", this.argv.port);
     });
   }
 }
