@@ -1,6 +1,6 @@
 {
   "name": "magesignaling",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "bin": "bin/app.js",
   "main": "src/index.js",
   "scripts": {
