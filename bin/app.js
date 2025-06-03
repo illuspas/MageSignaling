@@ -15,7 +15,7 @@ const argv = require("minimist")(process.argv.slice(2),
       "key_file": path.join(currentFilePath, "key.pem"),
       "cert_file": path.join(currentFilePath, "cert.pem"),
       "stun_port": 19302,
-      "signaling_port": 8080,
+      "signaling_port": 18080,
       "auth_key": "MageSignaling@2025"
     }
   });
@@ -24,7 +24,7 @@ if (argv.help) {
   console.log("Usage:");
   console.log("  magesignaling --help // print help information");
   console.log("  magesignaling --stun_port 19302 or -r 19302");
-  console.log("  magesignaling --signaling_port 8080 or -s 8080");
+  console.log("  magesignaling --signaling_port 18080 or -s 18080");
   process.exit(0);
 }
 
