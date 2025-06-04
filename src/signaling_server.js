@@ -49,13 +49,13 @@ class SignalingServer {
 
       // 连接关闭处理
       ws.on("close", () => {
-        this.removeUserFromRoom(roomId, userId);
+        this.removeUserFromRoom(ws, roomId, userId);
       });
 
       // 错误处理
       ws.on("error", (error) => {
         console.error("WebSocket error:", error);
-        this.removeUserFromRoom(roomId, userId);
+        this.removeUserFromRoom(ws, roomId, userId);
       });
 
       ws.on("message", (data) => {
@@ -77,6 +77,7 @@ class SignalingServer {
       console.log("[signaling] server started on TCP port", this.argv.port);
     });
   }
+
 
   addUserToRoom(ws, roomId, userId) {
     // 初始化房间如果不存在
@@ -104,19 +105,19 @@ class SignalingServer {
       timestamp: Date.now()
     }, userId); // 排除自己
 
-    console.log(`User ${userId} joined room ${roomId}`);
+    console.log(`User ${userId} join room ${roomId}`);
   }
 
   /**
    * 从房间中移除用户
+   * @param {WebSocket} ws WebSocket连接
    * @param {string} roomId 房间ID
    * @param {string} userId 用户ID
    */
-  removeUserFromRoom(roomId, userId) {
-    if (!this.rooms.has(roomId)) return;
-
+  removeUserFromRoom(ws, roomId, userId) {
     const room = this.rooms.get(roomId);
-    if (!room.has(userId)) return;
+    if (room?.get(userId) !== ws) return;
+
 
     room.delete(userId);
 
@@ -131,9 +132,8 @@ class SignalingServer {
         from: userId,
         timestamp: Date.now()
       });
+      console.log(`User ${userId} leave room ${roomId}`);
     }
-
-    console.log(`User ${userId} left room ${roomId}`);
   }
 
   /**
