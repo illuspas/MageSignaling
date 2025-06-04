@@ -9,7 +9,6 @@ class SignalingServer {
   constructor(argv) {
     this.argv = argv;
     this.rooms = new Map(); // { [roomId]: { [userId]: WebSocket } }
-    this.userRooms = new Map(); // { [userId]: roomId }
   }
 
   run() {
@@ -26,16 +25,22 @@ class SignalingServer {
       const roomId = query.roomId;
       const userId = query.userId;
 
-      if (!token || !roomId || !userId) {
+      if (!roomId || !userId) {
         ws.close(4000, "Missing token or roomId or userId parameter");
         return;
       }
 
-      let signStr = `${roomId}-${userId}-${this.argv.auth_key}`;
-      let sign = crypto.createHash("md5").update(signStr).digest("hex");
-      if (sign !== token) {
-        ws.close(4001, "Invalid token");
-        return;
+      if (this.argv.auth_key) {
+        if (!token) {
+          ws.close(4000, "Missing token parameter");
+          return;
+        }
+        let signStr = `${roomId}-${userId}-${this.argv.auth_key}`;
+        let sign = crypto.createHash("md5").update(signStr).digest("hex");
+        if (sign !== token) {
+          ws.close(4001, "Invalid token");
+          return;
+        }
       }
       console.log("WebSocket connection established", roomId, userId);
 
@@ -91,7 +96,6 @@ class SignalingServer {
 
     // 添加用户到房间
     room.set(userId, ws);
-    this.userRooms.set(userId, roomId);
 
     // 通知房间中的其他用户有新用户加入
     this.broadcastToRoom(roomId, {
@@ -115,7 +119,6 @@ class SignalingServer {
     if (!room.has(userId)) return;
 
     room.delete(userId);
-    this.userRooms.delete(userId);
 
     // 如果房间为空，删除房间
     if (room.size === 0) {

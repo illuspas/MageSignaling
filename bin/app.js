@@ -17,7 +17,6 @@ const argv = require("minimist")(process.argv.slice(2),
     },
     default: {
       "port": 19302,
-      "auth_key": "MageSignaling@2025",
     }
   });
 
