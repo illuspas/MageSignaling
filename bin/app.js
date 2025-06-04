@@ -2,8 +2,6 @@
 
 const MageSignaling = require("..");
 const package = require("../package.json");
-const path = require("path");
-const currentFilePath = path.resolve(__dirname);
 const argv = require("minimist")(process.argv.slice(2),
   {
     boolean: ["help", "version"],
@@ -19,8 +17,6 @@ const argv = require("minimist")(process.argv.slice(2),
     },
     default: {
       "port": 19302,
-      "key_file": path.join(currentFilePath, "key.pem"),
-      "cert_file": path.join(currentFilePath, "cert.pem"),
       "auth_key": "MageSignaling@2025",
     }
   });

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const ws = require("ws");
 const url = require("url");
+const http = require("http");
 const https = require("https");
 const crypto = require("crypto");
 
@@ -12,10 +13,10 @@ class SignalingServer {
   }
 
   run() {
-    const server = https.createServer({
+    const server = this.argv.cert_file && this.argv.key_file ? https.createServer({
       cert: fs.readFileSync(this.argv.cert_file),
       key: fs.readFileSync(this.argv.key_file)
-    });
+    }) : http.createServer();
 
     const wss = new ws.WebSocketServer({ server });
 
@@ -147,7 +148,7 @@ class SignalingServer {
     }
 
     if (message.to) {
-    // 处理1对1消息
+      // 处理1对1消息
       this.sendToUser(roomId, userId, message.to, {
         ...message,
         from: userId,
